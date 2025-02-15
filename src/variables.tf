@@ -14,7 +14,7 @@ variable "aws_secret_key" {
   description = "AWS secret key"
 }
 
-variable project_name {
+variable "resource_prefix" {
   type        = string
-  description = "Project name that will be utilized in the name of resources"
+  description = "Prefix that will be utilized in the name of resources"
 }
