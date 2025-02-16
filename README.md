@@ -24,37 +24,18 @@ The project consists of developing a distributed infrastructure in three environ
 │   │   └── outputs.tf 
 │   │
 │   └── ...
-│   
-├── environments/
-│   │
-│   ├── prod/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   └── terraform.tfvars
-│   │
-│   ├── staging/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   └── terraform.tfvars
-│   │
-│   └── dev/
-│       ├── main.tf
-│       ├── variables.tf
-│       └── terraform.tfvars
 │
-├── variables.tf
-├── outputs.tf
-└── main.tf
+├── main.tf
+├── provider.tf
+└── variables.tf
 ```
 
 **Description:**
 
 - **modules/**: Contains reusable Terraform modules that encapsulate specific infrastructure components (e.g., networking, compute, storage).
 
-- **environments/**: Holds environment-specific configurations (e.g., development, staging, production). Each environment has its own directory with configuration files.
-
-- **variables.tf**: Defines global variables used across all environments.
-
-- **outputs.tf**: Defines output values that can be accessed after applying the Terraform configuration.
-
 - **main.tf**: The main entry point for the Terraform configuration.
+
+- **provider.tf**: File that defines the communication with cloud provider.
+
+- **variables.tf**: File that defines global variables used across all environments.
