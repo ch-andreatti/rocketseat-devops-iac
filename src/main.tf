@@ -89,7 +89,7 @@ module "subnet-public" {
   depends_on = [module.vpc]
 }
 
-module "internet_gateway" {
+module "internet-gateway" {
 
   source = "./modules/internet_gateway"
 
@@ -103,4 +103,27 @@ module "internet_gateway" {
   )
 
   depends_on = [module.vpc]
+}
+
+module "route-table-public" {
+
+  source = "./modules/route_table"
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_id  = module.subnet-public.subnet_id
+  cidr_block = "0.0.0.0/0"
+  gateway_id = module.internet-gateway.internet_gateway_id
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}-route-table-public-${terraform.workspace}"
+    }
+  )
+
+  depends_on = [
+    module.vpc,
+    module.subnet-public,
+    module.internet-gateway
+  ]
 }
