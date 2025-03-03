@@ -8,6 +8,10 @@ locals {
 
       tags = { "env" = "dev", iac = true }
 
+      vpc = {
+        cidr_block = "10.0.0.0/16"
+      }
+
       subnet = {
         cidr_block_public  = "10.0.1.0/24"
         cidr_block_private = "10.0.2.0/24"
@@ -19,9 +23,13 @@ locals {
 
       tags = { "env" = "staging", iac = true }
 
+      vpc = {
+        cidr_block = "10.1.0.0/16"
+      }
+
       subnet = {
-        cidr_block_public  = "10.0.3.0/24"
-        cidr_block_private = "10.0.4.0/24"
+        cidr_block_public  = "10.1.1.0/24"
+        cidr_block_private = "10.1.2.0/24"
       }
 
     }
@@ -30,9 +38,13 @@ locals {
 
       tags = { "env" = "prod", iac = true }
 
+      vpc = {
+        cidr_block = "10.2.0.0/16"
+      }
+
       subnet = {
-        cidr_block_public  = "10.0.5.0/24"
-        cidr_block_private = "10.0.6.0/24"
+        cidr_block_public  = "10.2.1.0/24"
+        cidr_block_private = "10.2.2.0/24"
       }
 
     }
@@ -45,29 +57,34 @@ locals {
 
 # Network
 
-resource "aws_vpc" "vpc_main" {
-  cidr_block       = "10.0.0.0/16"
+module "vpc" {
+
+  source = "./modules/vpc"
+
+  cidr_block       = local.workspace_config.vpc.cidr_block
   instance_tenancy = "default"
 
   tags = merge(
     local.workspace_config.tags,
     {
-      name = "${var.resource_prefix}-vpc-main"
+      Name = "${var.resource_prefix}-vpc-${terraform.workspace}"
     }
   )
 }
 
-module "subnet-private" {
-  source     = "./modules/subnet"
-  vpc_id     = aws_vpc.vpc_main.id
-  cidr_block = local.workspace_config.subnet.cidr_block_private
+module "subnet-public" {
+
+  source = "./modules/subnet"
+
+  vpc_id     = module.vpc.vpc_id
+  cidr_block = local.workspace_config.subnet.cidr_block_public
 
   tags = merge(
     local.workspace_config.tags,
     {
-      name = "${var.resource_prefix}-subnet-private-${terraform.workspace}"
+      Name = "${var.resource_prefix}-subnet-public-${terraform.workspace}"
     }
   )
 
-  depends_on = [aws_vpc.vpc_main]
+  depends_on = [module.vpc]
 }

@@ -1,9 +1,9 @@
 
-variable "vpc_id" {
+variable "cidr_block" {
   type = string
 }
 
-variable "cidr_block" {
+variable "instance_tenancy" {
   type = string
 }
 

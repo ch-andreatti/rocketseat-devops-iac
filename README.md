@@ -27,7 +27,8 @@ The project consists of developing a distributed infrastructure in three environ
 │
 ├── main.tf
 ├── provider.tf
-└── variables.tf
+├── variables.tf
+└── terraform.tfvars
 ```
 
 **Description:**
@@ -39,3 +40,5 @@ The project consists of developing a distributed infrastructure in three environ
 - **provider.tf**: File that defines the communication with cloud provider.
 
 - **variables.tf**: File that defines global variables used across all environments.
+
+- **terraform.tfvars**: File with declaration of global variables used across all environments.
