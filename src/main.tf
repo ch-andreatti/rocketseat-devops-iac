@@ -88,3 +88,19 @@ module "subnet-public" {
 
   depends_on = [module.vpc]
 }
+
+module "internet_gateway" {
+
+  source = "./modules/internet_gateway"
+
+  vpc_id = module.vpc.vpc_id
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}-internet-gateway-${terraform.workspace}"
+    }
+  )
+
+  depends_on = [module.vpc]
+}

@@ -1,4 +1,4 @@
-output vpc_id {
-  value       = aws_vpc.vpc.id
-  sensitive   = false
+output "vpc_id" {
+  value     = aws_vpc.vpc.id
+  sensitive = false
 }
