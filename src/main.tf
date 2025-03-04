@@ -138,3 +138,16 @@ module "public_route" {
     module.public_subnet
   ]
 }
+
+module "elastic_ip" {
+
+  source = "./modules/elastic_ip"
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}_elastic_ip_${terraform.workspace}"
+    }
+  )
+}
+
