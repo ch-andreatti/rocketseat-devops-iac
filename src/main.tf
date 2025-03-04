@@ -188,4 +188,22 @@ module "nat_gateway" {
   ]
 }
 
+module "private_route_table" {
 
+  source = "./modules/route_table"
+
+  vpc_id    = module.vpc.vpc_id
+  subnet_id = module.private_subnet.subnet_id
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}_private_route_table_${terraform.workspace}"
+    }
+  )
+
+  depends_on = [
+    module.vpc,
+    module.private_subnet
+  ]
+}
