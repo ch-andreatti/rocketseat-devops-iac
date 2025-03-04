@@ -57,7 +57,7 @@ locals {
 
 # Network
 
-module vpc {
+module "vpc" {
 
   source = "./modules/vpc"
 
@@ -72,7 +72,7 @@ module vpc {
   )
 }
 
-module public_subnet {
+module "public_subnet" {
 
   source = "./modules/subnet"
 
@@ -89,7 +89,7 @@ module public_subnet {
   depends_on = [module.vpc]
 }
 
-module internet_gateway {
+module "internet_gateway" {
 
   source = "./modules/internet_gateway"
 
@@ -105,14 +105,12 @@ module internet_gateway {
   depends_on = [module.vpc]
 }
 
-module public_route_table {
+module "public_route_table" {
 
   source = "./modules/route_table"
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_id  = module.public_subnet.subnet_id
-  cidr_block = "0.0.0.0/0"
-  gateway_id = module.internet_gateway.internet_gateway_id
+  vpc_id    = module.vpc.vpc_id
+  subnet_id = module.public_subnet.subnet_id
 
   tags = merge(
     local.workspace_config.tags,
@@ -123,7 +121,20 @@ module public_route_table {
 
   depends_on = [
     module.vpc,
-    module.public_subnet,
-    module.internet_gateway
+    module.public_subnet
+  ]
+}
+
+module "public_route" {
+
+  source = "./modules/public_route"
+
+  route_table_id         = module.public_route_table.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = module.internet_gateway.internet_gateway_id
+
+  depends_on = [
+    module.internet_gateway,
+    module.public_subnet
   ]
 }

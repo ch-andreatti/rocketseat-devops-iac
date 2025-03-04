@@ -1,12 +1,12 @@
 
-variable vpc_id {
+variable "vpc_id" {
   type = string
 }
 
-variable cidr_block {
+variable "cidr_block" {
   type = string
 }
 
-variable tags {
+variable "tags" {
   type = map(string)
 }
