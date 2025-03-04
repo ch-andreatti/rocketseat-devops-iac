@@ -151,3 +151,22 @@ module "elastic_ip" {
   )
 }
 
+module "nat_gateway" {
+
+  source = "./modules/nat_gateway"
+
+  allocation_id = module.elastic_ip.elastic_ip_id
+  subnet_id     = module.public_subnet.subnet_id
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}_nat_gateway_${terraform.workspace}"
+    }
+  )
+
+  depends_on = [
+    module.public_subnet,
+    module.elastic_ip
+  ]
+}
