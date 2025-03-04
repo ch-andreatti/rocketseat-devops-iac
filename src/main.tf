@@ -139,6 +139,23 @@ module "public_route" {
   ]
 }
 
+module "private_subnet" {
+
+  source = "./modules/subnet"
+
+  vpc_id     = module.vpc.vpc_id
+  cidr_block = local.workspace_config.subnet.private_cidr_block
+
+  tags = merge(
+    local.workspace_config.tags,
+    {
+      Name = "${var.resource_prefix}_private_subnet_${terraform.workspace}"
+    }
+  )
+
+  depends_on = [module.vpc]
+}
+
 module "elastic_ip" {
 
   source = "./modules/elastic_ip"
@@ -170,3 +187,5 @@ module "nat_gateway" {
     module.elastic_ip
   ]
 }
+
+
