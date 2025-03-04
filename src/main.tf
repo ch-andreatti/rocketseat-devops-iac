@@ -207,3 +207,17 @@ module "private_route_table" {
     module.private_subnet
   ]
 }
+
+module "private_route" {
+
+  source = "./modules/private_route"
+
+  route_table_id         = module.private_route_table.route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  nat_gateway_id         = module.nat_gateway.nat_gateway_id
+
+  depends_on = [
+    module.nat_gateway,
+    module.private_subnet
+  ]
+}
