@@ -13,8 +13,8 @@ locals {
       }
 
       subnet = {
-        cidr_block_public  = "10.0.1.0/24"
-        cidr_block_private = "10.0.2.0/24"
+        public_cidr_block  = "10.0.1.0/24"
+        private_cidr_block = "10.0.2.0/24"
       }
 
     }
@@ -28,8 +28,8 @@ locals {
       }
 
       subnet = {
-        cidr_block_public  = "10.1.1.0/24"
-        cidr_block_private = "10.1.2.0/24"
+        public_cidr_block  = "10.1.1.0/24"
+        private_cidr_block = "10.1.2.0/24"
       }
 
     }
@@ -43,8 +43,8 @@ locals {
       }
 
       subnet = {
-        cidr_block_public  = "10.2.1.0/24"
-        cidr_block_private = "10.2.2.0/24"
+        public_cidr_block  = "10.2.1.0/24"
+        private_cidr_block = "10.2.2.0/24"
       }
 
     }
@@ -57,7 +57,7 @@ locals {
 
 # Network
 
-module "vpc" {
+module vpc {
 
   source = "./modules/vpc"
 
@@ -67,29 +67,29 @@ module "vpc" {
   tags = merge(
     local.workspace_config.tags,
     {
-      Name = "${var.resource_prefix}-vpc-${terraform.workspace}"
+      Name = "${var.resource_prefix}_vpc_${terraform.workspace}"
     }
   )
 }
 
-module "subnet-public" {
+module public_subnet {
 
   source = "./modules/subnet"
 
   vpc_id     = module.vpc.vpc_id
-  cidr_block = local.workspace_config.subnet.cidr_block_public
+  cidr_block = local.workspace_config.subnet.public_cidr_block
 
   tags = merge(
     local.workspace_config.tags,
     {
-      Name = "${var.resource_prefix}-subnet-public-${terraform.workspace}"
+      Name = "${var.resource_prefix}_public_subnet_${terraform.workspace}"
     }
   )
 
   depends_on = [module.vpc]
 }
 
-module "internet-gateway" {
+module internet_gateway {
 
   source = "./modules/internet_gateway"
 
@@ -98,32 +98,32 @@ module "internet-gateway" {
   tags = merge(
     local.workspace_config.tags,
     {
-      Name = "${var.resource_prefix}-internet-gateway-${terraform.workspace}"
+      Name = "${var.resource_prefix}_internet_gateway_${terraform.workspace}"
     }
   )
 
   depends_on = [module.vpc]
 }
 
-module "route-table-public" {
+module public_route_table {
 
   source = "./modules/route_table"
 
   vpc_id     = module.vpc.vpc_id
-  subnet_id  = module.subnet-public.subnet_id
+  subnet_id  = module.public_subnet.subnet_id
   cidr_block = "0.0.0.0/0"
-  gateway_id = module.internet-gateway.internet_gateway_id
+  gateway_id = module.internet_gateway.internet_gateway_id
 
   tags = merge(
     local.workspace_config.tags,
     {
-      Name = "${var.resource_prefix}-route-table-public-${terraform.workspace}"
+      Name = "${var.resource_prefix}_public_route_table_${terraform.workspace}"
     }
   )
 
   depends_on = [
     module.vpc,
-    module.subnet-public,
-    module.internet-gateway
+    module.public_subnet,
+    module.internet_gateway
   ]
 }

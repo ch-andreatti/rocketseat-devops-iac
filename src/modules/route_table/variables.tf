@@ -1,20 +1,20 @@
 
-variable "vpc_id" {
+variable vpc_id {
   type = string
 }
 
-variable "cidr_block" {
+variable cidr_block {
   type = string
 }
 
-variable "gateway_id" {
+variable gateway_id {
   type = string
 }
 
-variable "tags" {
+variable tags {
   type = map(string)
 }
 
-variable "subnet_id" {
+variable subnet_id {
   type = string
 }
