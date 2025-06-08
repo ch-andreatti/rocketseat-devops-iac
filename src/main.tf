@@ -156,68 +156,68 @@ module "private_subnet" {
   depends_on = [module.vpc]
 }
 
-module "elastic_ip" {
+# module "elastic_ip" {
 
-  source = "./modules/elastic_ip"
+#   source = "./modules/elastic_ip"
 
-  tags = merge(
-    local.workspace_config.tags,
-    {
-      Name = "${var.resource_prefix}_elastic_ip_${terraform.workspace}"
-    }
-  )
-}
+#   tags = merge(
+#     local.workspace_config.tags,
+#     {
+#       Name = "${var.resource_prefix}_elastic_ip_${terraform.workspace}"
+#     }
+#   )
+# }
 
-module "nat_gateway" {
+# module "nat_gateway" {
 
-  source = "./modules/nat_gateway"
+#   source = "./modules/nat_gateway"
 
-  allocation_id = module.elastic_ip.elastic_ip_id
-  subnet_id     = module.public_subnet.subnet_id
+#   allocation_id = module.elastic_ip.elastic_ip_id
+#   subnet_id     = module.public_subnet.subnet_id
 
-  tags = merge(
-    local.workspace_config.tags,
-    {
-      Name = "${var.resource_prefix}_nat_gateway_${terraform.workspace}"
-    }
-  )
+#   tags = merge(
+#     local.workspace_config.tags,
+#     {
+#       Name = "${var.resource_prefix}_nat_gateway_${terraform.workspace}"
+#     }
+#   )
 
-  depends_on = [
-    module.public_subnet,
-    module.elastic_ip
-  ]
-}
+#   depends_on = [
+#     module.public_subnet,
+#     module.elastic_ip
+#   ]
+# }
 
-module "private_route_table" {
+# module "private_route_table" {
 
-  source = "./modules/route_table"
+#   source = "./modules/route_table"
 
-  vpc_id    = module.vpc.vpc_id
-  subnet_id = module.private_subnet.subnet_id
+#   vpc_id    = module.vpc.vpc_id
+#   subnet_id = module.private_subnet.subnet_id
 
-  tags = merge(
-    local.workspace_config.tags,
-    {
-      Name = "${var.resource_prefix}_private_route_table_${terraform.workspace}"
-    }
-  )
+#   tags = merge(
+#     local.workspace_config.tags,
+#     {
+#       Name = "${var.resource_prefix}_private_route_table_${terraform.workspace}"
+#     }
+#   )
 
-  depends_on = [
-    module.vpc,
-    module.private_subnet
-  ]
-}
+#   depends_on = [
+#     module.vpc,
+#     module.private_subnet
+#   ]
+# }
 
-module "private_route" {
+# module "private_route" {
 
-  source = "./modules/private_route"
+#   source = "./modules/private_route"
 
-  route_table_id         = module.private_route_table.route_table_id
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = module.nat_gateway.nat_gateway_id
+#   route_table_id         = module.private_route_table.route_table_id
+#   destination_cidr_block = "0.0.0.0/0"
+#   nat_gateway_id         = module.nat_gateway.nat_gateway_id
 
-  depends_on = [
-    module.nat_gateway,
-    module.private_subnet
-  ]
-}
+#   depends_on = [
+#     module.nat_gateway,
+#     module.private_subnet
+#   ]
+# }
