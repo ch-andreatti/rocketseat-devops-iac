@@ -18,7 +18,7 @@ The goal is to practice Infrastructure as Code (IaC) by managing AWS resources u
 
 ### Diagram
 
-
+![Diagram](./support/diagram.jpeg)
 
 ### Folder structure
 
