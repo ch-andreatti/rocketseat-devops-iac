@@ -1,12 +1,24 @@
-# Multi-environment infrastructure configuration
+# AWS Network Infrastructure with Terraform
 
 ## Objective
 
-This project is the resolution of the IaC challenge of [Rocketseat](https://www.rocketseat.com.br/?utm_source=google&utm_medium=cpc&utm_campaign=lead&utm_term=perpetuo&utm_content=institucional-lead-home-texto-lead-brandkws-none-none-institucional-none-none-br-google&gad_source=1&gclid=EAIaIQobChMIs8m544a0iwMViiNECB0YPQXREAAYASAAEgIAn_D_BwE) DevOps track.
+This project uses Terraform to provision a basic network infrastructure on AWS in three environments (prod, staging and dev).  
 
-The project consists of developing a distributed infrastructure in three environments (prod, staging and dev) using Terraform. Each environment requires specific configurations such as different instance sizes, environment variables and network configurations.
+It includes the creation of:
+- VPC
+- subnet
+- internet gateway
+- nat gateway
+- route tables
+- elastic ip
+
+The goal is to practice Infrastructure as Code (IaC) by managing AWS resources using Terraform.
 
 ## Technical description
+
+### Diagram
+
+
 
 ### Folder structure
 
